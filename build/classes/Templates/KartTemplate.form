@@ -23,7 +23,9 @@
               <Component id="seller_name_field" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="41" max="-2" attributes="0"/>
               <Component id="price_field" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="33" max="32767" attributes="0"/>
+              <EmptySpace pref="43" max="32767" attributes="0"/>
+              <Component id="sold" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -35,6 +37,7 @@
                   <Component id="book_name_field" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="seller_name_field" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="price_field" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="sold" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="32767" attributes="0"/>
           </Group>
@@ -55,6 +58,11 @@
     <Component class="javax.swing.JLabel" name="price_field">
       <Properties>
         <Property name="text" type="java.lang.String" value="jLabel2"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="sold">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="jLabel1"/>
       </Properties>
     </Component>
   </SubComponents>

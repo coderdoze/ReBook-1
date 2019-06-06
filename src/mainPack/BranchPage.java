@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
+import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -38,6 +39,9 @@ public class BranchPage extends javax.swing.JFrame {
     private static String[] courses={"BTech","MTech","PhD"};
     private ArrayList<Book> books;
     public User user;
+    private ArrayList<String> selectedItems = new ArrayList<>();
+    private int selected;
+    private ArrayList<Book>selectedBooks=new ArrayList<>();
     
     public BranchPage() {
        
@@ -51,7 +55,7 @@ public class BranchPage extends javax.swing.JFrame {
         if(user1!=null)
             login_signup_button.setText(user1.getName());
        this.user=user1;
-
+       this.selected=selected;
       
         category_list.setModel(dm);
         category_list.setSelectedIndex(selected);
@@ -99,6 +103,7 @@ public class BranchPage extends javax.swing.JFrame {
                           //String values=prog_list.getSelectedValuesList()+" "+category_list.getSelectedValuesList();
                           //System.out.println(values);
                           loadBooks();
+                          
                       } catch (IOException ex) {
                           Logger.getLogger(BranchPage.class.getName()).log(Level.SEVERE, null, ex);
                       }
@@ -122,31 +127,32 @@ public class BranchPage extends javax.swing.JFrame {
 
         jButton1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        category_list = new javax.swing.JList<>();
+        category_list = new javax.swing.JList<String>();
         jScrollPane2 = new javax.swing.JScrollPane();
-        prog_list = new javax.swing.JList<>();
+        prog_list = new javax.swing.JList<String>();
         toHomePage_button = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         book_list = new javax.swing.JList();
         sell = new javax.swing.JButton();
         login_signup_button = new javax.swing.JButton();
+        cart = new javax.swing.JButton();
 
         jButton1.setText("jButton1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        category_list.setModel(new javax.swing.AbstractListModel<String>() {
+        category_list.setModel(new javax.swing.AbstractListModel() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
+            public Object getElementAt(int i) { return strings[i]; }
         });
         category_list.setPreferredSize(new java.awt.Dimension(100, 250));
         jScrollPane1.setViewportView(category_list);
 
-        prog_list.setModel(new javax.swing.AbstractListModel<String>() {
+        prog_list.setModel(new javax.swing.AbstractListModel() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
+            public Object getElementAt(int i) { return strings[i]; }
         });
         prog_list.setLayoutOrientation(javax.swing.JList.HORIZONTAL_WRAP);
         jScrollPane2.setViewportView(prog_list);
@@ -179,6 +185,13 @@ public class BranchPage extends javax.swing.JFrame {
             }
         });
 
+        cart.setText("Proceed To Cart");
+        cart.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cartActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -186,22 +199,25 @@ public class BranchPage extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(sell)
-                                .addGap(48, 48, 48)))
-                        .addComponent(jScrollPane3))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(22, 22, 22)
                         .addComponent(toHomePage_button)
                         .addGap(104, 104, 104)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 65, Short.MAX_VALUE)
-                        .addComponent(login_signup_button)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(login_signup_button))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(cart)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(sell)))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -214,14 +230,14 @@ public class BranchPage extends javax.swing.JFrame {
                     .addComponent(login_signup_button, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addGap(25, 25, 25)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(jScrollPane3)
-                        .addContainerGap())
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 374, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 374, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
-                        .addComponent(sell)
-                        .addGap(25, 25, 25))))
+                        .addComponent(cart)
+                        .addGap(26, 26, 26)
+                        .addComponent(sell)))
+                .addGap(25, 85, Short.MAX_VALUE))
         );
 
         pack();
@@ -260,6 +276,53 @@ public class BranchPage extends javax.swing.JFrame {
             this.setVisible(false);
         }
     }//GEN-LAST:event_login_signup_buttonActionPerformed
+
+    private void cartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cartActionPerformed
+        // TODO add your handling code here:
+        if(user==null)
+        {
+          JOptionPane.showMessageDialog(null, "Login First",
+                "Error", JOptionPane.ERROR_MESSAGE);
+          new LoginPage().setVisible(true);
+            this.setVisible(false);
+//            System.exit(0);
+          
+        }
+        else{
+            if (selectedItems.size() == 0) {
+                new KartPage(user, ip).setVisible(true);
+                this.setVisible(false);
+            } else {
+                String[] buttons = {"Yes", "No"};
+                int returnValue = JOptionPane.showOptionDialog(null, "Are you sure?", "Select books will be added to your cart!",
+                        JOptionPane.DEFAULT_OPTION,
+                        JOptionPane.QUESTION_MESSAGE,
+                        null,
+                        buttons,
+                        buttons[0]);
+                // Database se delete krna hai aur
+                System.out.println("Selected value is " + buttons[returnValue]);
+                if (returnValue == 0) {
+                    try {
+                        ServerConnection conn = ServerConnection.getInstance(ip);
+                        conn.addToCart(user, selectedBooks);
+                        new KartPage(user, ip).setVisible(true);
+                        this.setVisible(false);
+                    } catch (IOException ex) {
+                        Logger.getLogger(BranchPage.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                } else {
+                    try {
+                        new BranchPage(selected, user).setVisible(true);
+                        this.setVisible(false);
+                    } catch (IOException ex) {
+                        Logger.getLogger(BranchPage.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                }
+            }
+        }
+    }//GEN-LAST:event_cartActionPerformed
     
    
     /**
@@ -306,6 +369,7 @@ public class BranchPage extends javax.swing.JFrame {
    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JList book_list;
+    private javax.swing.JButton cart;
     private javax.swing.JList<String> category_list;
     private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane1;
@@ -338,6 +402,7 @@ public class BranchPage extends javax.swing.JFrame {
                     for(Book book:books)
                         addElement(book);
                 
+                
 //                addElement(new Book("isbn","name",150,"date",2,"supplierId",selected_category,selected_programme,2018,null,null,null));
 //                addElement(new Book("dsfsfs","ffdsf",100,"dfsds",151,"supplierId",selected_category,selected_programme,2018,null,null,null));
 //                addElement(new Book("dfgfdgg","vfv",201,"sacvcxdasd",551,"supplierId",selected_category,selected_programme,2018,null,null,null));
@@ -347,7 +412,55 @@ public class BranchPage extends javax.swing.JFrame {
         
         book_list.setModel(dlm);
         book_list.setCellRenderer(new BookTemplate());
-        
+        book_list.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        book_list.addListSelectionListener(new ListSelectionListener() {
+
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                if(!e.getValueIsAdjusting()){
+                    int index=book_list.getSelectedIndex();
+                    System.out.println(index+" is Clicked");
+                    
+                    for(int i = 0;i<selectedItems.size();++i){
+                            System.out.print(selectedItems.get(i)+" ");
+                        }
+                    System.out.println();
+
+                    if(!selectedItems.contains(index+""))
+                        selectedItems.add(book_list.getSelectedIndex()+"");
+                    else{
+                        selectedItems.remove(index+"");
+                        System.out.println("Index Removed  "+index);
+                    }
+
+                    int size = selectedItems.size();
+                    System.out.println("List: ");
+                    for(int i = 0;i<selectedItems.size();++i){
+                            System.out.print(selectedItems.get(i)+" ");
+                        }
+                    System.out.println();
+                    
+                    int select[];
+                    select=null;
+                    if(size == 0){
+                        System.out.println("Empty");
+                        select = null;
+                    }else{
+                    
+                     select = new int[selectedItems.size()];
+
+                        for(int i = 0;i<size;++i){
+                            select[i] = Integer.parseInt(selectedItems.get(i));
+                            selectedBooks.add(books.get(Integer.parseInt(selectedItems.get(i))));
+                        }
+
+                }
+                    book_list.removeListSelectionListener(this);
+                    book_list.setSelectedIndices(select);
+                    book_list.addListSelectionListener(this);
+            }
+        } 
+        });
     }
     
     private void loadBooks() throws IOException{

@@ -13,15 +13,25 @@ import java.io.Serializable;
  */
 public class KartItem implements Serializable{
      
-     public String book_name;
-     public String seller_name;
-     public double price;
+     private String book_name;
+     private String seller_name;
+     private double price;
+     private String sold;
 
-    public KartItem(String book_name, String seller_name, double price) {
+    public KartItem(String book_name, String seller_name, double price,String sold) {
         this.book_name = book_name;
         this.seller_name = seller_name;
         this.price = price;
+        this.sold=sold;
      }
+
+    public String getSold() {
+        return sold;
+    }
+
+    public void setSold(String sold) {
+        this.sold = sold;
+    }
 
     public String getBook_name() {
         return book_name;

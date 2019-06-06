@@ -5,11 +5,17 @@
  */
 package mainPack;
 
+import Entities.Book;
 import Templates.BookTemplate;
 import Templates.KartTemplate;
 import Entities.KartItem;
+import Entities.User;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
 import javax.swing.ListCellRenderer;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
@@ -24,13 +30,25 @@ public class KartPage extends javax.swing.JFrame {
     /**
      * Creates new form KartPage
      */
-     private ArrayList<KartItem> myKartItem;
-     private ArrayList<Integer> selectedItems = new ArrayList<>();
-     
+     private ArrayList<Book> myKartItem;
+     private ArrayList<String> selectedItems = new ArrayList<>();
+     private String ip;
+     private User user;
+     private ArrayList<Book>selectedBooks=new ArrayList<>();
+     private ArrayList<Book> books; 
+     private double cart_total;
+     private int cart_items;
      
     public KartPage() {
         initComponents();
         
+        loadKart();
+    }
+    public KartPage(User user,String ip){
+        
+        initComponents();
+        this.ip=ip;
+        this.user=user;
         loadKart();
     }
 
@@ -173,18 +191,63 @@ public class KartPage extends javax.swing.JFrame {
 
     private void back_homePage_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_back_homePage_buttonActionPerformed
         // TODO add your handling code here:
-         new HomePage().setVisible(true);
+         new HomePage(user).setVisible(true);
          this.setVisible(false);
     }//GEN-LAST:event_back_homePage_buttonActionPerformed
 
     private void buy_item_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buy_item_buttonActionPerformed
         // TODO add your handling code here:
+         try {
+             //get the inputs from cart database
+             ServerConnection conn=ServerConnection.getInstance(ip);
+             boolean response=conn.buy_selected(user);
+             if(response)
+             {
+                JOptionPane.showMessageDialog(null, "Order placed",
+                "Error", JOptionPane.ERROR_MESSAGE);
+             }
+             else
+             {
+                 JOptionPane.showMessageDialog(null, "All books in cart are not present!!",
+                "Error", JOptionPane.ERROR_MESSAGE);
+                 new KartPage(user,ip).setVisible(true);
+                 this.setVisible(false);
+             }
+             
+         } catch (IOException ex) {
+             Logger.getLogger(KartPage.class.getName()).log(Level.SEVERE, null, ex);
+         }
+        
     }//GEN-LAST:event_buy_item_buttonActionPerformed
 
     private void delete_item_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delete_item_buttonActionPerformed
         // TODO add your handling code here:
-        
-        // Database se delete krna hai aur 
+        if (selectedItems.size() != 0) {
+            String[] buttons = {"Yes", "No"};
+            int returnValue = JOptionPane.showOptionDialog(null, "Are you sure?", "Select an option",
+                    JOptionPane.DEFAULT_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    buttons,
+                    buttons[0]);
+            // Database se delete krna hai aur
+            System.out.println("Selected value is " + buttons[returnValue]);
+            if(returnValue==0){
+                ServerConnection conn;
+                try {
+                    conn = ServerConnection.getInstance(ip);
+                    conn.deleteItems(user.getUserId(),selectedBooks);
+                    new KartPage(user,ip).setVisible(true);
+                    this.setVisible(false);
+                } catch (IOException ex) {
+                    Logger.getLogger(KartPage.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
+            }else{
+                new KartPage(user,ip).setVisible(true);
+                this.setVisible(false);
+            }
+        }
     }//GEN-LAST:event_delete_item_buttonActionPerformed
 
     /**
@@ -239,9 +302,15 @@ public class KartPage extends javax.swing.JFrame {
     private javax.swing.JTextField total_cart_value;
     // End of variables declaration//GEN-END:variables
  
-    private ArrayList<KartItem> getKartItem() {
-        //get the inputs from cart database
+    private ArrayList<Book> getKartItem() {
         
+        try {
+             //get the inputs from cart database
+             ServerConnection conn=ServerConnection.getInstance(ip);
+             books=conn.getKartItem(user.getUserId());
+         } catch (IOException ex) {
+             Logger.getLogger(KartPage.class.getName()).log(Level.SEVERE, null, ex);
+         }
         return null;
     }
     
@@ -258,13 +327,27 @@ public class KartPage extends javax.swing.JFrame {
         populate__kartList(myKartItem);
     }
 
-    private void populate__kartList(ArrayList<KartItem> myKartItem) {
+    private void populate__kartList(ArrayList<Book> myKartItem) {
          //To change body of generated methods, choose Tools | Templates.
         DefaultListModel<KartItem> dm=new DefaultListModel<KartItem>();
-        dm.addElement(new KartItem("physics","hcv",500));
+       /* dm.addElement(new KartItem("physics","hcv",500));
         dm.addElement(new KartItem("maths","rds",1000));
-        dm.addElement(new KartItem("chem","msc",1500));  
-        
+        dm.addElement(new KartItem("chem","msc",1500));  */
+        if (myKartItem != null) {
+            for (int i = 0; i < myKartItem.size(); i++) {
+                String sold;
+                if (myKartItem.get(i).isBookSold()) {
+                    sold = "Yes";
+                } else {
+                    sold = "No";
+                }
+                dm.addElement(new KartItem(myKartItem.get(i).getBookName(),
+                        myKartItem.get(i).getSupplierId(), myKartItem.get(i).getUnitPrice(), sold));
+                if (sold == "No") {
+                    cart_total += myKartItem.get(i).getUnitPrice();
+                }
+            }
+        }
         kartList.setModel(dm);
         kartList.setCellRenderer(new KartTemplate());
         kartList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
@@ -290,11 +373,11 @@ public class KartPage extends javax.swing.JFrame {
                         }
                     System.out.println();
 
-                    if(!selectedItems.contains(index))
-                        selectedItems.add(kartList.getSelectedIndex());
+                    if(!selectedItems.contains(index+""))
+                        selectedItems.add(kartList.getSelectedIndex()+"");
                     else{
-                        selectedItems.remove(index);
-                        System.out.println("Index Removed");
+                        selectedItems.remove(index+"");
+                        System.out.println("Index Removed  "+index);
                     }
 
                     int size = selectedItems.size();
@@ -305,6 +388,7 @@ public class KartPage extends javax.swing.JFrame {
                     System.out.println();
                     
                     int select[];
+                    select=null;
                     if(size == 0){
                         System.out.println("Empty");
                         select = null;
@@ -314,9 +398,10 @@ public class KartPage extends javax.swing.JFrame {
                     
 
                         for(int i = 0;i<size;++i){
-                            select[i] = selectedItems.get(i);
+                            select[i] = Integer.parseInt(selectedItems.get(i));
+                            selectedBooks.add(myKartItem.get(Integer.parseInt(selectedItems.get(i))));
                         }
-
+                        
 //                        for(int i = 0;i<size;++i){
 //                            System.out.print(select[i]+" ");
 //                        }
@@ -330,9 +415,12 @@ public class KartPage extends javax.swing.JFrame {
                 }
             }
         });
-        total_cart_value.setText("1"); // find total cart item values from db and add here
-        total_cart_items.setText("3"); // find total cart item  from db and add here
         
+        total_cart_value.setText(Double.toString(cart_total)); // find total cart item values from db and add here
+        if(myKartItem!=null)
+        total_cart_items.setText(Integer.toString(myKartItem.size())); // find total cart item  from db and add here
+        else
+        total_cart_items.setText(0+"");
         
     }
     

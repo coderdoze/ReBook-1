@@ -352,8 +352,8 @@ public class AddBook extends javax.swing.JFrame {
                 priceV = Integer.parseInt(price.getText().toString());
                 //change date datatype
                 handNoV = Integer.parseInt(handNo.getText().toString());
-                Book book = new Book(isbnV, titleV, priceV, new Date().toString(), handNoV, user.getUserId(), selected_category,
-                         selected_programme, editionV, frontI, backI, sideI);
+                Book book = new Book(isbnV, titleV, priceV, new java.sql.Date(System.currentTimeMillis()).toString(), handNoV, user.getUserId(), selected_category,
+                         selected_programme, editionV, false,frontI, backI, sideI);
                 System.out.println("saved");
                 //sending info to server
                 ServerConnection conn = ServerConnection.getInstance(HomePage.ip);

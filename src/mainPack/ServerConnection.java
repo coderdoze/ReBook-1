@@ -15,6 +15,8 @@ import java.io.ObjectOutputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -36,7 +38,7 @@ public class ServerConnection {
         try{
         
         s=new Socket();
-        s.connect(new InetSocketAddress(serverIP,4208),1000);
+        s.connect(new InetSocketAddress(serverIP,HomePage.port),1000);
         dos=new DataOutputStream(s.getOutputStream());
         os=new ObjectOutputStream(s.getOutputStream());
         ois=new ObjectInputStream(s.getInputStream());
@@ -132,4 +134,59 @@ public class ServerConnection {
             return null;
         }
     }
+    public void addToCart(User user,ArrayList<Book>bookList){
+        try {
+            dos.writeUTF("4");
+            dos.flush();
+            os.writeObject(user);
+            os.flush();
+            os.writeObject(bookList);
+            System.out.println("Books saved to user cart");
+        } catch (IOException ex) {
+            Logger.getLogger(ServerConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+    }
+    public ArrayList<Book> getKartItem(String userId){
+        try {
+            //query
+            dos.writeUTF("8");
+            dos.flush();
+            dos.writeUTF(userId);
+            dos.flush();
+            ArrayList<Book> books=(ArrayList<Book>)ois.readObject();
+            return books;
+        } catch (IOException ex) {
+            Logger.getLogger(ServerConnection.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ServerConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    public void deleteItems(String userId,ArrayList<Book>bookList){
+        try {
+            dos.writeUTF("7");
+            dos.flush();
+            dos.writeUTF(userId);
+            dos.flush();
+            os.writeObject(bookList);
+            os.flush();
+        } catch (IOException ex) {
+            Logger.getLogger(ServerConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    public boolean buy_selected(User user){
+        try {
+            dos.writeUTF("9");
+            dos.flush();
+            os.writeObject(user);
+            os.flush();
+            return dis.readBoolean();
+        } catch (IOException ex) {
+            Logger.getLogger(ServerConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+    
 }

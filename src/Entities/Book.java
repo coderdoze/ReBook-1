@@ -27,6 +27,15 @@ public class Book implements Serializable{
     private BufferedImage bookImage1;
     private BufferedImage bookImage2;
     private BufferedImage bookImage3;
+    private boolean bookSold;
+
+    public boolean isBookSold() {
+        return bookSold;
+    }
+
+    public void setBookSold(boolean bookSold) {
+        this.bookSold = bookSold;
+    }
 
     public String getBookProgramme() {
         return bookProgramme;
@@ -73,7 +82,7 @@ public class Book implements Serializable{
     }
 
     public Book(String bookId, String bookName, double unitPrice, String purchaseDate,
-            int handNo, String supplierId, String bookCourse,String bookProgramme, int edition,
+            int handNo, String supplierId, String bookCourse,String bookProgramme, int edition,boolean sold,
             BufferedImage bookImage1,BufferedImage bookImage2,BufferedImage bookImage3) {
         this.bookId = bookId;
         this.bookName = bookName;
@@ -84,6 +93,7 @@ public class Book implements Serializable{
         this.bookCourse = bookCourse;
         this.bookProgramme=bookProgramme;
         this.edition = edition;
+        this.bookSold=sold;
         this.bookImage1=bookImage1;
         this.bookImage2=bookImage2;
         this.bookImage3=bookImage3;
@@ -92,7 +102,7 @@ public class Book implements Serializable{
     
     public void setAll(String bookId, String bookName, double unitPrice,
             String purchaseDate, int handNo, String supplierId, String bookCourse,String bookProgramme, int edition,
-            BufferedImage bookImage1,BufferedImage bookImage2,BufferedImage bookImage3){
+            boolean sold,BufferedImage bookImage1,BufferedImage bookImage2,BufferedImage bookImage3){
         
         this.bookId = bookId;
         this.bookName = bookName;
@@ -103,6 +113,7 @@ public class Book implements Serializable{
         this.bookCourse = bookCourse;
         this.bookProgramme=bookProgramme;
         this.edition = edition;
+        this.bookSold=sold;
         this.bookImage1=bookImage1;
         this.bookImage2=bookImage2;
         this.bookImage3=bookImage3;

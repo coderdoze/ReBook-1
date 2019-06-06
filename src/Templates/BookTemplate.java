@@ -10,6 +10,7 @@ import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 import Entities.Book;
 import Entities.User;
+import java.awt.Color;
 
 /**
  *
@@ -21,6 +22,7 @@ public class BookTemplate extends javax.swing.JPanel implements ListCellRenderer
      * Creates new form BookTemplate
      */
     public BookTemplate() {
+        setOpaque(true);
         initComponents();
     }
 
@@ -40,7 +42,7 @@ public class BookTemplate extends javax.swing.JPanel implements ListCellRenderer
         book_hand_label = new javax.swing.JLabel();
         book_supplier_label = new javax.swing.JLabel();
         supplier_rating_bar = new javax.swing.JProgressBar();
-        add_to_cart_button = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
 
         book_image_label.setText("Book Images");
 
@@ -54,12 +56,7 @@ public class BookTemplate extends javax.swing.JPanel implements ListCellRenderer
 
         book_supplier_label.setText("Book Supplier");
 
-        add_to_cart_button.setText("ADD TO CART");
-        add_to_cart_button.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                add_to_cart_buttonActionPerformed(evt);
-            }
-        });
+        jLabel1.setText("ADD TO CART");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -67,15 +64,14 @@ public class BookTemplate extends javax.swing.JPanel implements ListCellRenderer
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(book_image_label, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(add_to_cart_button, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(book_image_label, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(book_supplier_label)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
                                 .addComponent(supplier_rating_bar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -83,47 +79,47 @@ public class BookTemplate extends javax.swing.JPanel implements ListCellRenderer
                                     .addComponent(book_edition_label)
                                     .addComponent(book_price_label)
                                     .addComponent(book_hand_label))
-                                .addGap(0, 0, Short.MAX_VALUE)))))
-                .addContainerGap())
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(47, 47, 47)
+                        .addComponent(jLabel1)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(book_image_label, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(supplier_rating_bar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(book_name_label)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(book_edition_label)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(book_price_label)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(book_hand_label)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(book_supplier_label))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(add_to_cart_button)
-                .addContainerGap(83, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(supplier_rating_bar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(book_name_label)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(book_edition_label)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(book_price_label)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(book_hand_label)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(book_supplier_label)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel1)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void add_to_cart_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_add_to_cart_buttonActionPerformed
-        // TODO add your handling code here:
-        //add it into cart table
-    }//GEN-LAST:event_add_to_cart_buttonActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton add_to_cart_button;
     private javax.swing.JLabel book_edition_label;
     private javax.swing.JLabel book_hand_label;
     private javax.swing.JLabel book_image_label;
     private javax.swing.JLabel book_name_label;
     private javax.swing.JLabel book_price_label;
     private javax.swing.JLabel book_supplier_label;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JProgressBar supplier_rating_bar;
     // End of variables declaration//GEN-END:variables
 
@@ -143,7 +139,13 @@ public class BookTemplate extends javax.swing.JPanel implements ListCellRenderer
         book_supplier_label.setText(book.getSupplierId());
         supplier_rating_bar.setValue(5);
         
-        
+        if(isSelected){
+            setBackground(Color.BLUE);
+            setForeground(Color.LIGHT_GRAY);
+        }else{
+            setBackground(list.getBackground());
+            setForeground(list.getForeground());
+        }
         return this;
     }
 

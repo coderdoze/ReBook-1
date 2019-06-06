@@ -37,12 +37,15 @@ public class KartTemplate extends javax.swing.JPanel implements ListCellRenderer
         book_name_field = new javax.swing.JLabel();
         seller_name_field = new javax.swing.JLabel();
         price_field = new javax.swing.JLabel();
+        sold = new javax.swing.JLabel();
 
         book_name_field.setText("jLabel1");
 
         seller_name_field.setText("jLabel2");
 
         price_field.setText("jLabel2");
+
+        sold.setText("jLabel1");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -55,7 +58,9 @@ public class KartTemplate extends javax.swing.JPanel implements ListCellRenderer
                 .addComponent(seller_name_field)
                 .addGap(41, 41, 41)
                 .addComponent(price_field)
-                .addContainerGap(33, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
+                .addComponent(sold)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -64,7 +69,8 @@ public class KartTemplate extends javax.swing.JPanel implements ListCellRenderer
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(book_name_field)
                     .addComponent(seller_name_field)
-                    .addComponent(price_field))
+                    .addComponent(price_field)
+                    .addComponent(sold))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -74,6 +80,7 @@ public class KartTemplate extends javax.swing.JPanel implements ListCellRenderer
     private javax.swing.JLabel book_name_field;
     private javax.swing.JLabel price_field;
     private javax.swing.JLabel seller_name_field;
+    private javax.swing.JLabel sold;
     // End of variables declaration//GEN-END:variables
 
     @Override
@@ -84,7 +91,7 @@ public class KartTemplate extends javax.swing.JPanel implements ListCellRenderer
         book_name_field.setText(item.getBook_name());
         seller_name_field.setText(item.getSeller_name());
         price_field.setText(Double.toString(item.getPrice()));
-        
+        sold.setText(item.getSold());
         if(isSelected){
             setBackground(Color.BLUE);
             setForeground(Color.LIGHT_GRAY);
